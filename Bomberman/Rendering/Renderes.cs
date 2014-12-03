@@ -12,7 +12,7 @@ namespace Bomberman
         public static Renderable GameField;
         public static EntityRender EntityLayer;
         public static Renderable Menu;
-        
+        public static Renderable FpsDisplay;
 
         public static void Setup()
         {
@@ -21,7 +21,8 @@ namespace Bomberman
             GameField.Enable = false;
             EntityLayer = new EntityRender(75, 29);
             GameField.AddChild(new Point(0, 0), EntityLayer);
-            
+            FpsDisplay = Background.AddChild(new Point(0, 0), new Point(20, 2));
+            FpsDisplay.Enable = false;
 
             Menu = Background.AddChild(new Point(5, 12), new Point(20, 10));
             Menu.Enable = false;

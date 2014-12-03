@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -144,7 +145,14 @@ namespace Bomberman
                     b.Location.y + ofset.y >= _map.Size.y
                     
                 ) break;
-                
+
+                var hit =
+                    from entity in Renderes.EntityLayer.Entities
+                    where entity.Location == (b.Location + ofset)
+                    && entity.OnHit() 
+                    select entity;
+
+                if(hit.ToList().Count != 0) Debugger.Break();
                 
                 if (_colMap[b.Location.x + ofset.x, b.Location.y + ofset.y] >= 128)
                 {

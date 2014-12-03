@@ -138,17 +138,47 @@ namespace Bomberman
                 force = false;
 
                 //Max 60 hz
-                while (MainStopwatch.ElapsedMilliseconds - time < (1000/60))
+                while (MainStopwatch.ElapsedMilliseconds - time < (1000 / 100))
                 {
                     DeltaTime = MainStopwatch.ElapsedMilliseconds - time;
-                    
+
                 }
+
+                FpsDisplay();
                 //Trace.WriteLine(String.Format("Finished tick in {0} ms", DeltaTime));
             }
         }
 
-
-
+        private static void FpsDisplay()
+        {
+            if (Renderes.FpsDisplay != null && Renderes.FpsDisplay.Enable)
+            {
+                char[] fps = String.Format("{0:000}ms ({1:000}) hz", DeltaTime, 1000/DeltaTime).ToCharArray();
+                char[] entity =
+                    String.Format("{0} Entities Active", Renderes.EntityLayer.Entities.Count).ToCharArray();
+                for (int i = 0; i < 20; i++)
+                {
+                    if (i < fps.Length)
+                    {
+                        Renderes.FpsDisplay[i, 0] =
+                            new CharInfo(fps[i], ConsoleColor.Green, ConsoleColor.DarkGray);
+                    }
+                    else
+                    {
+                        Renderes.FpsDisplay[i, 0] = new CharInfo(0, 0);
+                    }
+                    if (i < entity.Length)
+                    {
+                        Renderes.FpsDisplay[i, 1] =
+                            new CharInfo(entity[i], ConsoleColor.Green, ConsoleColor.DarkGray);
+                    }
+                    else
+                    {
+                        Renderes.FpsDisplay[i, 1] = new CharInfo(0, 0);
+                    }
+                }
+            }
+        }
         private bool HandleKey(ConsoleKeyInfo info)
         {
             
@@ -181,6 +211,9 @@ namespace Bomberman
                 //force = true;
                 return false;
             }
+
+            if (info.Key == ConsoleKey.Escape)
+                Renderes.FpsDisplay.Enable = !Renderes.FpsDisplay.Enable;
 
             if(Game != null && Game.Active)
             {

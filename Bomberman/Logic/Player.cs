@@ -15,6 +15,11 @@ namespace Bomberman
         public int MaxBombs = 1;
         public int BombSize = 2;
 
+        public override bool OnHit()
+        {
+            return (--Hp <= 0);
+        }
+
         public bool UpdatePos(long time)
         {
             float moveDist = (time*Speed)/1000;
