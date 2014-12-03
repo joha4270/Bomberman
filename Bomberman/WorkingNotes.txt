@@ -1,0 +1,13 @@
+﻿map format:
+sizeX sizeY
+start:
+[unbroken map]
+broken:
+[change when broken]
+collision:
+[0001001 collision map. Special values have meaning in future? drops?
+Upper case letter is spawn point, lower case letter is clearing]
+
+Char Foreground Background
+
+#0A
