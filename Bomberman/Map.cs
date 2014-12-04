@@ -11,6 +11,17 @@ namespace Bomberman
         public readonly int[,] CollisionMap;
         public readonly CharInfo[,] UnbrokenMap;
         public readonly CharInfo[,] BrokenMap;
+        public float DropChance = 0.5f;
+        public float BombChance = 0.4f;
+        public float PowerUpChance = 0.3f;
+        public float BootsChance = 0.2f;
+        public float HpUpCHance = 0.1f;
+
+
+        public int PowerUp = 1;
+        public int BombUp = 1;
+        public float spdUp = 0.5f;
+        public int HpUp = 1;
 
         public List<SpawnPoint> SpawnPoints;
 

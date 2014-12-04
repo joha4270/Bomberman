@@ -14,9 +14,9 @@ namespace Bomberman
         private readonly byte[,] _colMap; //declared as byte instead of bool since it
         //won't change structure size in memory and extra data can be kept
         //Broken, unbroken, unbreakable etc
+        private readonly Random _random;
 
         public bool Active { get; set; }
-
 
         public Game(Map m, int players, Dictionary<ConsoleKey, PlayerDirection> keyBinding)
         {
@@ -25,6 +25,7 @@ namespace Bomberman
             _keyBinding = keyBinding;
             _players = new Player[players];
             _colMap = new byte[m.Size.x, m.Size.y];
+            _random = new Random();
             for (int x = 0; x < m.Size.x; x++)
             {
                 for (int y = 0; y < m.Size.y; y++)
@@ -91,7 +92,29 @@ namespace Bomberman
             {
                 if (player.UpdatePos(delta))
                 {
-                    
+                    //Resharper was anoyed if i used player directley
+                    Player player1 = player;
+                    var pickups =
+                        from entity in Renderes.EntityLayer.Entities
+                        where entity != player1 &&
+                              entity.Location == player1.Location &&
+                              entity.GetType() == typeof (Powerup)
+                        select entity;
+
+                    IEnumerable<Entity> entities = pickups as Entity[] ?? pickups.ToArray();
+                    foreach (Entity pickup in entities)
+                    {
+                        Powerup p = (Powerup) pickup;
+                        player.MaxBombs += p.BombUp;
+                        player.Hp += p.HpUp;
+                        player.Speed += p.SpeedUp;
+                        player.BombSize += p.PowerUp;
+
+                    }
+
+                    var list = entities.ToList();
+
+                    Renderes.EntityLayer.Entities.RemoveAll(list.Contains);
                 }
             }
 
@@ -106,15 +129,6 @@ namespace Bomberman
 
                 if (b.Power > 0)
                 {
-                    Renderes.EntityLayer.Entities.Add(
-                        new Bomb()
-                        {
-                            Display = Options.BombGfx,
-                            Location = b.Location,
-                            Power = 0,
-                            Fuse = Options.BombGfxTime
-                        });
-
                     ExplodeBomb(b, new Point(1, 0));
                     ExplodeBomb(b, new Point(-1, 0));
                     ExplodeBomb(b, new Point(0, 1));
@@ -125,7 +139,7 @@ namespace Bomberman
 
         private void ExplodeBomb(Bomb b, Point dir)
         {
-            for (int i = 1; i <= b.Power; i++)
+            for (int i = 0; i <= b.Power; i++)
             {
                 
                 Point ofset = dir*i;
@@ -146,13 +160,16 @@ namespace Bomberman
                     
                 ) break;
 
-                var hit =
-                    from entity in Renderes.EntityLayer.Entities
+                List<Entity> hit =
+                    (from entity in Renderes.EntityLayer.Entities
                     where entity.Location == (b.Location + ofset)
                     && entity.OnHit() 
-                    select entity;
+                    select entity).ToList();
 
-                if(hit.ToList().Count != 0) Debugger.Break();
+                if (hit.ToList().Count != 0)
+                {
+                    Renderes.EntityLayer.Entities.RemoveAll(hit.Contains);
+                }
                 
                 if (_colMap[b.Location.x + ofset.x, b.Location.y + ofset.y] >= 128)
                 {
@@ -162,6 +179,8 @@ namespace Bomberman
                         Renderes.EntityLayer.Entities.Add(nBomb);
                         Renderes.GameField[b.Location.x + ofset.x, b.Location.y + ofset.y] =
                             _map.BrokenMap[b.Location.x + ofset.x, b.Location.y + ofset.y];
+
+                        DropHandle(b.Location + ofset);
                     }
                     break;
                 }
@@ -170,6 +189,57 @@ namespace Bomberman
                     Renderes.EntityLayer.Entities.Add(nBomb);
                 }
                 
+            }
+        }
+
+        private void DropHandle(Point location)
+        {
+            if (_random.NextDouble() < _map.DropChance)
+            {
+                float sum = _map.BootsChance + _map.BombChance + _map.HpUpCHance + _map.PowerUpChance;
+                sum -= ((float)_random.NextDouble()*sum);
+                
+                if ((sum -= _map.BombChance) < 0)
+                {
+                    Powerup p = new Powerup()
+                    {
+                        BombUp = _map.BombUp,
+                        Display = Options.BombAmountUpDisplay,
+                        Location = location
+                    };
+                    Renderes.EntityLayer.Entities.Add(p);
+                }
+                else if((sum -= _map.PowerUpChance) < 0)
+                {
+                    Powerup p = new Powerup()
+                    {
+                        Display = Options.BombPowerUpDisplay,
+                        Location = location,
+                        PowerUp = _map.PowerUp
+                    };
+                    Renderes.EntityLayer.Entities.Add(p);
+                }
+                else if((sum -= _map.BootsChance) < 0)
+                {
+                    Powerup p = new Powerup()
+                    {
+                        Display = Options.BootsDisplay,
+                        Location = location,
+                        SpeedUp = _map.spdUp
+                    };
+                    Renderes.EntityLayer.Entities.Add(p);
+                }
+                else  //hpup
+                {
+                    Powerup p = new Powerup()
+                    {
+                        Display = Options.HpupDisplay,
+                        Location = location,
+                        HpUp = _map.HpUp
+                    };
+                    Renderes.EntityLayer.Entities.Add(p);
+                }
+
             }
         }
 

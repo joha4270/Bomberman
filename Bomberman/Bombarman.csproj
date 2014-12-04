@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\Bomb.cs" />
+    <Compile Include="Logic\Powerup.cs" />
     <Compile Include="Rendering\CharUnion.cs" />
     <Compile Include="Logic\Direction.cs" />
     <Compile Include="Rendering\DirectRender.cs" />
