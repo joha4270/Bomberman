@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Bomberman
@@ -64,9 +65,17 @@ namespace Bomberman
             }
             catch(Exception ex)
             {
-                MapFalureException nex = new MapFalureException(line, ex);
-                
-                throw nex; //CHANGE TO NEX
+                //If a debugger is attached we just want to lit it deal with it
+                //othervice throw an exception that can be dealt with in the
+                //menu
+                if(Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }  
+                else
+                {
+                    throw  new MapFalureException(line, ex);
+                }
             }
         }
 

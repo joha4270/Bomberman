@@ -191,7 +191,24 @@ namespace Bomberman
             //if (info.KeyChar == 'f')
             //    force = true;
 
-            if (info.KeyChar == 'i' && Game == null)
+            if (info.KeyChar == '1' && Game == null)
+            {
+                Dictionary<ConsoleKey, PlayerDirection> keyBind = new Dictionary<ConsoleKey, PlayerDirection>
+                {
+                    {ConsoleKey.W, new PlayerDirection(0, Direction.Up)},
+                    {ConsoleKey.S, new PlayerDirection(0, Direction.Down)},
+                    {ConsoleKey.A, new PlayerDirection(0, Direction.Left)},
+                    {ConsoleKey.D, new PlayerDirection(0, Direction.Right)},
+                    {ConsoleKey.Spacebar, new PlayerDirection(0, Direction.Place)},
+                    
+                };
+                Game = new Game(new Map(File.OpenRead("Maps/75_29_field.txt")), 1, keyBind) { Active = true };
+                Renderes.GameField.Enable = true;
+                //force = true;
+                return false;
+            }
+
+            if (info.KeyChar == '2' && Game == null)
             {
                 Dictionary<ConsoleKey, PlayerDirection> keyBind = new Dictionary<ConsoleKey,PlayerDirection>
                 {
@@ -207,6 +224,63 @@ namespace Bomberman
                     {ConsoleKey.Enter, new PlayerDirection(1, Direction.Place)}
                 };
                 Game = new Game(new Map(File.OpenRead("Maps/75_29_field.txt")), 2, keyBind) {Active = true};
+                Renderes.GameField.Enable = true;
+                //force = true;
+                return false;
+            }
+
+            if (info.KeyChar == '3' && Game == null)
+            {
+                Dictionary<ConsoleKey, PlayerDirection> keyBind = new Dictionary<ConsoleKey, PlayerDirection>
+                {
+                    {ConsoleKey.W, new PlayerDirection(0, Direction.Up)},
+                    {ConsoleKey.S, new PlayerDirection(0, Direction.Down)},
+                    {ConsoleKey.A, new PlayerDirection(0, Direction.Left)},
+                    {ConsoleKey.D, new PlayerDirection(0, Direction.Right)},
+                    {ConsoleKey.Spacebar, new PlayerDirection(0, Direction.Place)},
+                    {ConsoleKey.UpArrow, new PlayerDirection(1, Direction.Up)},
+                    {ConsoleKey.DownArrow, new PlayerDirection(1, Direction.Down)},
+                    {ConsoleKey.LeftArrow, new PlayerDirection(1, Direction.Left)},
+                    {ConsoleKey.RightArrow, new PlayerDirection(1, Direction.Right)},
+                    {ConsoleKey.Enter, new PlayerDirection(1, Direction.Place)},
+                    {ConsoleKey.I, new PlayerDirection(2, Direction.Up)},
+                    {ConsoleKey.K, new PlayerDirection(2, Direction.Down)},
+                    {ConsoleKey.L, new PlayerDirection(2, Direction.Right)},
+                    {ConsoleKey.J, new PlayerDirection(2, Direction.Left)},
+                    {ConsoleKey.O, new PlayerDirection(2, Direction.Place)}
+                };
+                Game = new Game(new Map(File.OpenRead("Maps/75_29_field.txt")), 3, keyBind) { Active = true };
+                Renderes.GameField.Enable = true;
+                //force = true;
+                return false;
+            }
+
+            if (info.KeyChar == '4' && Game == null)
+            {
+                Dictionary<ConsoleKey, PlayerDirection> keyBind = new Dictionary<ConsoleKey, PlayerDirection>
+                {
+                    {ConsoleKey.W, new PlayerDirection(0, Direction.Up)},
+                    {ConsoleKey.S, new PlayerDirection(0, Direction.Down)},
+                    {ConsoleKey.A, new PlayerDirection(0, Direction.Left)},
+                    {ConsoleKey.D, new PlayerDirection(0, Direction.Right)},
+                    {ConsoleKey.Spacebar, new PlayerDirection(0, Direction.Place)},
+                    {ConsoleKey.UpArrow, new PlayerDirection(1, Direction.Up)},
+                    {ConsoleKey.DownArrow, new PlayerDirection(1, Direction.Down)},
+                    {ConsoleKey.LeftArrow, new PlayerDirection(1, Direction.Left)},
+                    {ConsoleKey.RightArrow, new PlayerDirection(1, Direction.Right)},
+                    {ConsoleKey.Enter, new PlayerDirection(1, Direction.Place)},
+                    {ConsoleKey.I, new PlayerDirection(2, Direction.Up)},
+                    {ConsoleKey.K, new PlayerDirection(2, Direction.Down)},
+                    {ConsoleKey.L, new PlayerDirection(2, Direction.Right)},
+                    {ConsoleKey.J, new PlayerDirection(2, Direction.Left)},
+                    {ConsoleKey.O, new PlayerDirection(2, Direction.Place)},
+                    {ConsoleKey.D8, new PlayerDirection(3, Direction.Up)},
+                    {ConsoleKey.D2, new PlayerDirection(3, Direction.Down)},
+                    {ConsoleKey.D4, new PlayerDirection(3, Direction.Left)},
+                    {ConsoleKey.D6, new PlayerDirection(3, Direction.Right)},
+                    {ConsoleKey.D5, new PlayerDirection(3, Direction.Place)}
+                };
+                Game = new Game(new Map(File.OpenRead("Maps/75_29_field.txt")), 4, keyBind) { Active = true };
                 Renderes.GameField.Enable = true;
                 //force = true;
                 return false;

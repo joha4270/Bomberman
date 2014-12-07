@@ -247,18 +247,22 @@ namespace Bomberman
         {
             if (_keyBinding.ContainsKey(consoleKeyInfo.Key))
             {
-                _players[_keyBinding[consoleKeyInfo.Key].PlayerId]
+                if (_players[_keyBinding[consoleKeyInfo.Key].PlayerId] != null)
+                {
+                    _players[_keyBinding[consoleKeyInfo.Key].PlayerId]
                     .SetDirection(_keyBinding[consoleKeyInfo.Key].Direction);
+                }
+                
             }
         }
 
 
         internal void CreateBomb(Player player)
         {
-            int ExistingBombs = Renderes.EntityLayer.Entities.Count(
+            int existingBombs = Renderes.EntityLayer.Entities.Count(
                 entity => entity.GetType() == typeof (Bomb) && ((Bomb) entity).Owner == player);
 
-            if (ExistingBombs >= player.MaxBombs) return;
+            if (existingBombs >= player.MaxBombs) return;
             Bomb b = new Bomb()
             {
                 Owner = player,

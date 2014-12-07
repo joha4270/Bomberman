@@ -15,6 +15,11 @@ namespace Bomberman
         public int MaxBombs = 1;
         public int BombSize = 2;
 
+        public bool Dead
+        {
+            get { return Hp > 0; }
+        }
+
         public override bool OnHit()
         {
             return (--Hp <= 0);

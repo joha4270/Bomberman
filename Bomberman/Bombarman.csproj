@@ -92,9 +92,13 @@
     <Content Include="Maps\75_29_field.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Maps\Compact.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Maps\_MenuPage.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Maps_unformated\Small4p.txt" />
     <Content Include="Maps_unformated\_MenuPage.txt" />
     <Content Include="WorkingNotes.txt" />
   </ItemGroup>
